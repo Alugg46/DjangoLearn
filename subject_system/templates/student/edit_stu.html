@@ -1,0 +1,74 @@
+{% extends "student/base.html" %}
+{% block content %}
+    <section class="forms">
+        <div class="col-md-10">
+                  <div class="card">
+                    <div class="card-header d-flex align-items-center">
+                      <h4>Edit student</h4>
+                    </div>
+                    <div class="card-body">
+                      <p>You can write down your infos here</p>
+                      <form action="" method="post">
+                        <div class="form-group">
+                          <label>Name</label>
+                          <input type="text" value={{edit_stu.name}} placeholder="Name" class="form-control" name="name">
+                        </div>
+                        <div class="form-group">
+                          <label>Age</label>
+                          <input type="text" value={{edit_stu.age}} placeholder="Age" class="form-control" name="age">
+                        </div>
+                        <div class="form-group">
+                          <label>Gender</label>
+                          <select name="sex" id="" class="form-control" >
+                              {% if edit_stu.sex == 0 %}
+                                   <option value="1">Male</option>
+                                  <option value="0" selected>Female</option>
+                                  <option value="2">Secret</option>
+                              {% elif edit_stu.sex == 1 %}
+                                  <option value="1" selected>Male</option>
+                                  <option value="0">Female</option>
+                                  <option value="2">Secret</option>
+                              {% else %}
+                                  <option value="1">Male</option>
+                                  <option value="0">Female</option>
+                                  <option value="2" selected>Secret</option>
+                              {% endif %}
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label>Birthday</label>
+                          <input type="date" value={{edit_stu.birthday|date:"Y-m-d"}} placeholder="Birth" class="form-control" name="birthday">
+                        </div>
+                        <div class="form-group">
+                          <label>Class</label>
+                          <select name="clas_id" id="" class="form-control">
+                            {% for class in class_list%}
+                                {% if edit_stu.clas == class %}
+                                <option selected value="{{class.id}}">{{class.name}}</option>
+                                {% else %}
+                                <option value="{{class.id}}">{{class.name}}</option>
+                                {% endif %}
+                              {% endfor %}
+                          </select>
+                        </div>
+                      <div class="form-group">
+                          <label>Courses</label>
+                          <select name="course_id_list" id="" class="form-control" multiple size="5" >
+                            {% for course in course_list%}
+                                {% if course in edit_stu.courses.all %}
+                                    <option selected value="{{course.id}}">{{course.title}}</option>
+                                {% else%}
+                                     <option value="{{course.id}}">{{course.title}}</option>
+                                {% endif %}
+                              {% endfor %}
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <input type="submit" value="Signin" class="btn btn-primary">
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+    </section>
+{% endblock %}
