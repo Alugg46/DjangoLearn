@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<h3>Form请求</h3>
+<form action="" method="post">
+    {% csrf_token %}
+    用户名<input type="text" name="user">
+    密码<input type="password" name="pwd">
+    <input type="submit">
+</form>
+
+<h3>Ajax登录</h3>
+<div>
+{#    {% csrf_token %}#}
+    用户名<input type="text" class="user">
+    密码<input type="password" class="pwd">
+    <input type="button" value="ajax提交" class="login_btn">
+    <span class="msg"></span>
+</div>
+
+<script>
+    $.ajax({
+        url:"/get_tokens/",
+        success:function (res){
+            console.log(res);
+            localStorage.setItem("token", res)
+        }
+    })
+
+    $(".login_btn").click(function (){
+        $.ajax({
+            url:"/login/",
+            type:"post",
+            headers:{'X-CSRFToken':localStorage.getItem("token")},
+            data:{
+                {#csrfmiddlewaretoken:localStorage.getItem("token"),#}
+                user:$(".user").val(),
+                pwd:$(".pwd").val(),
+            },
+            success:function (res){
+                console.log("res:",res)
+                if(res.state){
+                    location.href = "/index/";
+                }else{
+                    $(".msg").html(res.msg);
+                }
+            }
+        })
+    })
+</script>
+
+</body>
+</html>
